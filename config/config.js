@@ -6,7 +6,6 @@ module.exports = {
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
     "dialect": "postgres",
-    // "port": process.env.PORT || 5432,
     "operatorsAliases": 0
   },
   "test": {
@@ -15,7 +14,6 @@ module.exports = {
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    // "port": process.env.PORT || 5432,
     "operatorsAliases": 0
   },
   "production": {
@@ -24,7 +22,6 @@ module.exports = {
     "database": "",
     "host": "",
     "dialect": "postgres",
-    // "port": process.env.PORT || 5432,
     "operatorsAliases": 0
   },
   "saltRounds": 10

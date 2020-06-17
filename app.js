@@ -1,10 +1,17 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
+const http = require("http");
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const socketio = require('socket.io');
+const { EventIo } = require("./socket/socket")
 const ENV = process.env.NODE_ENV;
 const stage = require("./config/config")[ENV];
+const PORT = process.env.SERVER_PORT || 3010
+
+
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var messageRouter = require('./routes/message');
@@ -23,8 +30,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRouter);
 app.use('/user', usersRouter);
-app.use(middleware.auth);
+// app.use(middleware.auth);
 // app.use('/message', messageRouter);
+// app.get('/', function (req, res) {
+//   res.sendFile(__dirname + '/index.html');
+// });
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -42,9 +53,21 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-app.listen(stage.port || 3000, () => {
-  console.log(`Server now listening at localhost:${stage.port || 3000}`);
+const server = http.createServer(app);
+const io = socketio(server);
+server.listen(PORT, () => {
+  console.log(`Server now listening at localhost:${PORT}`);
 });
+
+io.set("transports", ["websocket"]);
+io.use((socket, next) => {
+  let token = socket.handshake.query.username;
+  if (token) {
+    return next();
+  }
+  console.log("error");
+});
+EventIo(io);
 
 
 module.exports = app;

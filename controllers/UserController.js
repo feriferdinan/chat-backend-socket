@@ -6,14 +6,14 @@ exports.index = async function (req, res) {
         if (users.length !== 0) {
             res.status(200).json({
                 'code': 200,
-                'status': 'OK',
+                'status': true,
                 'message': '',
                 'data': users
             })
         } else {
             res.status(204).json({
                 'code': 204,
-                'status': 'ERROR',
+                'status': false,
                 'message': 'EMPTY',
                 'data': {}
             })
@@ -21,7 +21,7 @@ exports.index = async function (req, res) {
     } catch (err) {
         res.status(500).json({
             'code': 500,
-            'status': 'ERROR',
+            'status': false,
             'message': err.messages,
             'data': {}
         })
@@ -47,7 +47,7 @@ exports.store = async function (req, res) {
         if (users) {
             res.status(201).json({
                 'code': 201,
-                'status': 'OK',
+                'status': true,
                 'message': 'User Has Been Added',
                 'data': users,
             })
@@ -55,7 +55,7 @@ exports.store = async function (req, res) {
     } catch (err) {
         res.status(400).json({
             'code': 400,
-            'status': 'ERROR',
+            'status': false,
             'message': err.message,
             'data': {},
         })

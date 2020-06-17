@@ -7,6 +7,7 @@ const saltRounds = require("../config/config").saltRounds;
 const salt = bcrypt.genSaltSync(saltRounds);
 
 var model = require('../models');
+const { token } = require('morgan');
 
 exports.test = function (req, res) {
     res.send('ok');
@@ -37,16 +38,22 @@ exports.login = function (req, res) {
                 username: user.username,
             }
             var token = await jwt.sign(newData, process.env.SECRET_KEY);
-            return res.send({
-                data: newData,
-                'token': token
+            newData.avatar = user.avatar
+            newData.phone_number = user.phone_number
+            return res.status(200).send({
+                'code': 200,
+                'status': true,
+                'message': 'Success Login',
+                "data": newData,
+                'token': token,
+
             })
         })
         .catch(function (e) {
             console.log(e);
             res.status(400).json({
                 'code': 400,
-                'status': 'ERROR',
+                'status': false,
                 'message': e.message,
                 'data': {},
             })
