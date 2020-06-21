@@ -1,10 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-
-express().use(bodyParser.json());
-
-const auth = (req, res, next) => {
+exports.auth = (req, res, next) => {
     const token = (req.headers.authorization != undefined) ? req.headers.authorization.split(' ')[1] : false
     if (token) {
         jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
@@ -30,5 +25,3 @@ const auth = (req, res, next) => {
     }
 }
 
-
-module.exports = { auth };

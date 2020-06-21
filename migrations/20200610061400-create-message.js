@@ -3,16 +3,26 @@ const { v4: uuid } = require('uuid');
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('messages', {
-      id: {
+      _id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
       },
       user_id: {
-        type: Sequelize.STRING
+        allowNull: true,
+        type: Sequelize.UUID,
+        references: {
+          model: 'users',
+          key: '_id'
+        }
       },
       room_id: {
-        type: Sequelize.STRING
+        allowNull: true,
+        type: Sequelize.UUID,
+        references: {
+          model: 'rooms',
+          key: '_id'
+        }
       },
       text: {
         type: Sequelize.TEXT

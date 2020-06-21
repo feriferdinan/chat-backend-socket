@@ -4,6 +4,8 @@ var express = require('express');
 const http = require("http");
 var path = require('path');
 var cookieParser = require('cookie-parser');
+// var bodyParser = require('body-parser')
+
 var logger = require('morgan');
 const socketio = require('socket.io');
 const { EventIo } = require("./socket/socket")
@@ -15,6 +17,7 @@ const PORT = process.env.SERVER_PORT || 3010
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var messageRouter = require('./routes/message');
+var roomRouter = require('./routes/room');
 var middleware = require('./middleware/middleware');
 var app = express();
 
@@ -26,15 +29,15 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRouter);
 app.use('/user', usersRouter);
-// app.use(middleware.auth);
-// app.use('/message', messageRouter);
-// app.get('/', function (req, res) {
-//   res.sendFile(__dirname + '/index.html');
-// });
+app.use(middleware.auth);
+app.use('/message', messageRouter);
+app.use('/room', roomRouter);
 
 
 // catch 404 and forward to error handler
@@ -52,13 +55,8 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 const server = http.createServer(app);
 const io = socketio(server);
-server.listen(PORT, () => {
-  console.log(`Server now listening at localhost:${PORT}`);
-});
-
 io.set("transports", ["websocket"]);
 io.use((socket, next) => {
   let token = socket.handshake.query.username;
@@ -68,6 +66,10 @@ io.use((socket, next) => {
   console.log("error");
 });
 EventIo(io);
+
+server.listen(PORT, () => {
+  console.log(`Server now listening at localhost:${PORT}`);
+});
 
 
 module.exports = app;

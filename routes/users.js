@@ -3,7 +3,6 @@ var router = express.Router();
 
 var UserController = require('../controllers/UserController');
 
-router.get('/', UserController.index);
-router.post('/', UserController.store);
+router.patch('/', UserController.patch);
 
 module.exports = router;

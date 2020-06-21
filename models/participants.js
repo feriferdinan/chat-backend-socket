@@ -1,11 +1,23 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const participants = sequelize.define('participants', {
-    user_id: DataTypes.STRING,
-    room_id: DataTypes.STRING
-  }, {});
-  participants.associate = function(models) {
-    // associations can be defined here
+    _id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    user_id: DataTypes.UUID,
+    room_id: DataTypes.UUID
+  }, {
+  });
+  participants.associate = function (models) {
+    participants.belongsTo(models.user, {
+      foreignKey: 'user_id',
+    })
+    participants.belongsTo(models.room, {
+      foreignKey: 'room_id',
+    })
   };
   return participants;
 };

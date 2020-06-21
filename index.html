@@ -65,7 +65,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         $(function () {
-            var socket = io("http://localhost:3000", {
+            var socket = io("http://localhost:4321", {
                 transports: ["websocket"],
                 query: {
                     username: "feri_html",
@@ -76,7 +76,7 @@
             $('form').submit(function () {
                 socket.emit('send message', {
                     _id: Math.random(),
-                    rid: 1,
+                    room_id: 1,
                     text: $('#m').val(),
                     createdAt: new Date(),
                     user: {
@@ -87,7 +87,7 @@
                 });
                 socket.emit('received', {
                     _id: Math.random(),
-                    rid: 1,
+                    room_id: 1,
                     text: $('#m').val(),
                     createdAt: new Date(),
                     user: {

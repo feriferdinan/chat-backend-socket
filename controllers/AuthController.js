@@ -7,16 +7,8 @@ const saltRounds = require("../config/config").saltRounds;
 const salt = bcrypt.genSaltSync(saltRounds);
 
 var model = require('../models');
-const { token } = require('morgan');
-
-exports.test = function (req, res) {
-    res.send('ok');
-}
 
 exports.login = function (req, res) {
-    if ((process.env.SECRET_KEY).length < 5) {
-        return res.status(500).send({ 'message': 'terjadi kesalahan!' })
-    }
     if (req.body.email == undefined)
         return res.status(400).send({ 'message': 'email is required!' })
     if (req.body.password == undefined)
@@ -33,7 +25,7 @@ exports.login = function (req, res) {
                 return res.status(401).send({ 'message': 'wrong password!' })
 
             var newData = {
-                id: user.id,
+                _id: user._id,
                 email: user.email,
                 username: user.username,
             }

@@ -2,17 +2,27 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('participants', {
-      id: {
+      _id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.STRING
+        allowNull: true,
+        type: Sequelize.UUID,
+        references: {
+          model: 'users',
+          key: '_id'
+        }
       },
       room_id: {
-        type: Sequelize.STRING
+        allowNull: true,
+        type: Sequelize.UUID,
+        references: {
+          model: 'rooms',
+          key: '_id'
+        }
       },
       createdAt: {
         allowNull: false,
