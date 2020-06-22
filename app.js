@@ -5,6 +5,8 @@ const http = require("http");
 var path = require('path');
 var cookieParser = require('cookie-parser');
 // var bodyParser = require('body-parser')
+var cors = require('cors');
+
 
 var logger = require('morgan');
 const socketio = require('socket.io');
@@ -28,7 +30,13 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE']
+}));
 
 
 app.use(express.static(path.join(__dirname, 'public')));
