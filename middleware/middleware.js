@@ -5,8 +5,7 @@ exports.auth = (req, res, next) => {
         jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
             if (err) {
                 res.status(403).send({
-                    "code": 403,
-                    "status": "ERROR",
+                    "status": false,
                     "message": err,
                     "data": {}
                 })
@@ -16,9 +15,8 @@ exports.auth = (req, res, next) => {
             }
         })
     } else {
-        res.status(403).send({
-            "code": 403,
-            "status": "ERROR",
+        res.status(401).send({
+            "status": false,
             "message": "Token is undefined",
             "data": {}
         })

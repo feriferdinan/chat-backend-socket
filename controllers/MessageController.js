@@ -18,14 +18,12 @@ exports.index = async function (req, res) {
         });
         if (messages) {
             res.status(200).json({
-                'code': 200,
                 'status': true,
                 'message': 'Success ',
                 'data': messages
             })
         } else {
             res.status(204).json({
-                'code': 204,
                 'status': false,
                 'message': 'EMPTY',
                 'data': {}
@@ -33,7 +31,6 @@ exports.index = async function (req, res) {
         }
     } catch (err) {
         res.status(500).json({
-            'code': 500,
             'status': false,
             'message': err,
             'data': {}
@@ -60,7 +57,6 @@ exports.store = async function (req, res) {
         })
         if (message) {
             res.status(201).json({
-                'code': 201,
                 'status': true,
                 'message': 'message Has Been Added',
                 'data': message,
@@ -68,7 +64,6 @@ exports.store = async function (req, res) {
         }
     } catch (err) {
         res.status(400).json({
-            'code': 400,
             'status': false,
             'message': err.message,
             'data': {},

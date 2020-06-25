@@ -33,7 +33,6 @@ exports.login = function (req, res) {
             newData.avatar = user.avatar
             newData.phone_number = user.phone_number
             return res.status(200).send({
-                'code': 200,
                 'status': true,
                 'message': 'Success Login',
                 "data": newData,
@@ -44,7 +43,6 @@ exports.login = function (req, res) {
         .catch(function (e) {
             console.log(e);
             res.status(500).json({
-                'code': 500,
                 'status': false,
                 'message': e.message,
                 'data': {},
@@ -83,7 +81,7 @@ exports.register = async function (req, res) {
     if (req.body.password || validator.isLength(req.body.password, { min: 8, max: 10 }) == false)
         return res.status(400).send({ 'message': 'password length min 8, max 10' })
 
-    await model.User.findOne({ where: { email: req.body.email } })
+    await model.user.findOne({ where: { email: req.body.email } })
         .then(function (user) {
             if (user != null)
                 return res.status(200).send({ 'message': 'email already registered' });
@@ -97,7 +95,7 @@ exports.register = async function (req, res) {
     async function createUser(userData) {
         var emailToken = await bcrypt.hashSync(req.body.email, salt);
 
-        await model.User.create({
+        await model.user.create({
             name: userData.name,
             email: userData.email,
             password: userData.password,
@@ -124,11 +122,11 @@ exports.register = async function (req, res) {
 
 exports.verifyEmail = function (req, res) {
     var token = req.query.token;
-    model.User.scope('withEmailToken').findOne({ where: { emailToken: token } })
+    model.user.findOne({ where: { emailToken: token } })
         .then(function (user) {
             if (user == null)
                 return res.status(404).send({ 'message': 'link invalid' })
-            model.User.update(
+            model.user.update(
                 {
                     emailToken: null,
                     isActive: true

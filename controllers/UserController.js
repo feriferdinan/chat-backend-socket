@@ -21,7 +21,6 @@ exports.patch = async function (req, res) {
         });
         if (users) {
             res.status(201).json({
-                'code': 201,
                 'status': true,
                 'message': 'User Has Been updated',
                 'data': users,
@@ -29,7 +28,6 @@ exports.patch = async function (req, res) {
         }
     } catch (err) {
         res.status(400).json({
-            'code': 400,
             'status': false,
             'message': err.message,
             'data': {},
