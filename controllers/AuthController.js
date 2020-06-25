@@ -85,7 +85,6 @@ exports.register = async function (req, res) {
         .then(function (user) {
             if (user != null)
                 return res.status(200).send({ 'message': 'email already registered' });
-            // call create user function
             createUser(userData = req.body);
         })
         .catch(function (e) {

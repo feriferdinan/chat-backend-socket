@@ -42,8 +42,8 @@ app.use(cors({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRouter);
-app.use('/user', usersRouter);
 app.use(middleware.auth);
+app.use('/user', usersRouter);
 app.use('/message', messageRouter);
 app.use('/room', roomRouter);
 

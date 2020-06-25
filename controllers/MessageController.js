@@ -1,18 +1,38 @@
 var model = require('../models');
 const { v4: uuid } = require('uuid');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.index = async function (req, res) {
     try {
+        const user_id = req.userData._id;
         const messages = await model.room.findAll({
             include: [
                 {
                     model: model.participants,
                     attributes: ["_id"],
-                    include: [{ model: model.user, attributes: ["_id", "name", "avatar"] }]
+                    // where: {
+                    //     user_id
+                    //     // : {
+                    //     //     [Op.iLike]: "%" + user_id + "%"
+                    //     // }
+                    // },
+                    include: [{
+                        model: model.user,
+                        attributes: ["_id", "name", "avatar"]
+                    }]
                 },
                 {
                     model: model.message,
-                    include: [{ model: model.user, attributes: ["_id", "name", "avatar"] }]
+                    separate: true,
+                    limit: 25,
+                    order: [
+                        ['createdAt', 'DESC'],
+                    ],
+                    include: [{
+                        model: model.user,
+                        attributes: ["_id", "name", "avatar"]
+                    }]
                 },
             ]
         });

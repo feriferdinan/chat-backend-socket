@@ -1,13 +1,11 @@
 var model = require('../models');
 
-
 exports.patch = async function (req, res) {
     try {
         const {
             name,
             username,
             email,
-            password,
             phone_number,
             avatar
         } = req.body;
