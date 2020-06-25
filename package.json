@@ -10,6 +10,9 @@
     "server-win": "SET NODE_ENV=development&& nodemon app.js"
   },
   "author": "Septian Feri Ferdinan",
+  "engines": {
+    "node": "10.16.0"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",

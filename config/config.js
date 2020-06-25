@@ -17,11 +17,15 @@ module.exports = {
     "operatorsAliases": 0
   },
   "production": {
-    "username": process.env.DB_USERNAME,
-    "password": process.env.DB_PASS,
-    "database": "",
-    "host": "",
+    "username": process.env.DB_PROD_USERNAME,
+    "password": process.env.DB_PROD_PASS,
+    "database": process.env.DB_PROD_DATABASE,
+    "host": process.env.DB_PROD_HOST,
     "dialect": "postgres",
+    "dialectOptions": {
+      // "ssl": true,
+      ssl: { rejectUnauthorized: false }
+    },
     "operatorsAliases": 0
   },
   "saltRounds": 10
