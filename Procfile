@@ -1,1 +1,2 @@
-web: npm start
+worker: npm start
+heroku scale worker=1
