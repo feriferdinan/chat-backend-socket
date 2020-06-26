@@ -2,8 +2,8 @@ exports.EventIo = (io) => {
 
     io.on("connection", function (socket) {
 
-        let token = socket.handshake.query.username;
-        console.log(token, 'connected.');
+        let usr = socket.handshake.query.username;
+        console.log(usr, 'connected.');
         socket.on("join", (room_id) => {
             socket.join(room_id);
             console.log("joining room", room_id);
@@ -26,7 +26,7 @@ exports.EventIo = (io) => {
         });
 
         socket.on("disconnect", () => {
-            console.log(token, "disconect");
+            console.log(usr, "disconect");
         });
     });
 

@@ -1,27 +1,27 @@
 require('dotenv').config();
-var createError = require('http-errors');
-var express = require('express');
-const http = require("http");
-var path = require('path');
-var cookieParser = require('cookie-parser');
-// var bodyParser = require('body-parser')
-var cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+// const bodyParser = require('body-parser')
+const cors = require('cors');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
-
-var logger = require('morgan');
-const socketio = require('socket.io');
+const logger = require('morgan');
 const { EventIo } = require("./socket/socket")
 const ENV = process.env.NODE_ENV;
 const stage = require("./config/config")[ENV];
 const PORT = process.env.SERVER_PORT || 3010
 
-var middleware = require('./middleware/middleware');
+const middleware = require('./middleware/middleware');
 
-var usersRouter = require('./routes/users');
-var authRouter = require('./routes/auth');
-var messageRouter = require('./routes/message');
-var roomRouter = require('./routes/room');
-var app = express();
+const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+const messageRouter = require('./routes/message');
+const roomRouter = require('./routes/room');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -65,8 +65,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-const server = http.createServer(app);
-const io = socketio(server);
 
 io.set("transports", ["websocket"]);
 io.use((socket, next) => {
@@ -82,6 +80,7 @@ EventIo(io);
 server.listen(PORT || 3000, () => {
   console.log(`Server now listening at localhost:${PORT}`);
 });
+
 
 
 module.exports = app;
