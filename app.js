@@ -79,7 +79,9 @@ io.use((socket, next) => {
 
 EventIo(io);
 
-server.listen(PORT || 3000, '0.0.0.0', () => {
+server.listen(PORT || 3000, () => {
   console.log(`Server now listening at localhost:${PORT}`);
 });
 
+
+module.exports = app;
