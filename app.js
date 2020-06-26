@@ -6,8 +6,7 @@ const cookieParser = require('cookie-parser');
 // const bodyParser = require('body-parser')
 const cors = require('cors');
 const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+
 
 const logger = require('morgan');
 const { EventIo } = require("./socket/socket")
@@ -66,6 +65,8 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 io.set("transports", ["websocket"]);
 io.use((socket, next) => {
   let token = socket.handshake.query.username;
@@ -74,16 +75,10 @@ io.use((socket, next) => {
   }
   console.log("error");
 });
-
 EventIo(io);
 
 server.listen(PORT || 5000, () => {
-  console.log(`Server now listening at localhost:${PORT}`);
-});
-
-
-app.listen(5001, () => {
-  console.log(`App now listening at localhost:5001`);
+  console.log(`Server now listening at localhost:${PORT || 5000}`);
 });
 
 
