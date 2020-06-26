@@ -73,9 +73,10 @@ io.use((socket, next) => {
   }
   console.log("error");
 });
+
 EventIo(io);
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server now listening at localhost:${PORT}`);
 });
 
