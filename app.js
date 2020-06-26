@@ -15,12 +15,12 @@ const ENV = process.env.NODE_ENV;
 const stage = require("./config/config")[ENV];
 const PORT = process.env.SERVER_PORT || 3010
 
+var middleware = require('./middleware/middleware');
 
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var messageRouter = require('./routes/message');
 var roomRouter = require('./routes/room');
-var middleware = require('./middleware/middleware');
 var app = express();
 
 // view engine setup
@@ -64,22 +64,22 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 const server = http.createServer(app);
+
+// const io = socketio(server);
+// io.set("transports", ["websocket"]);
+// io.use((socket, next) => {
+//   let token = socket.handshake.query.username;
+//   if (token) {
+//     return next();
+//   }
+//   console.log("error");
+// });
+
+// EventIo(io);
+
 server.listen(PORT || 8080, () => {
   console.log(`Server now listening at localhost:${PORT}`);
 });
-
-const io = socketio(server);
-io.set("transports", ["websocket"]);
-io.use((socket, next) => {
-  let token = socket.handshake.query.username;
-  if (token) {
-    return next();
-  }
-  console.log("error");
-});
-
-EventIo(io);
-
 
 
 module.exports = app;
