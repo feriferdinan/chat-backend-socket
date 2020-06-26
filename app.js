@@ -65,23 +65,23 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
-const io = socketio(server);
-io.set("transports", ["websocket"]);
-io.use((socket, next) => {
-  let token = socket.handshake.query.username;
-  if (token) {
-    return next();
-  }
-  console.log("error");
-});
+// const io = socketio(server);
+// io.set("transports", ["websocket"]);
+// io.use((socket, next) => {
+//   let token = socket.handshake.query.username;
+//   if (token) {
+//     return next();
+//   }
+//   console.log("error");
+// });
 
-EventIo(io);
+// EventIo(io);
 
-server.listen(PORT || 3000, '0.0.0.0', () => {
-  console.log(`Server now listening at localhost:${PORT}`);
-});
+// server.listen(PORT || 3000, '0.0.0.0', () => {
+//   console.log(`Server now listening at localhost:${PORT}`);
+// });
 
 
 module.exports = app;
