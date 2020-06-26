@@ -64,6 +64,10 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 const server = http.createServer(app);
+server.listen(PORT || 8080, () => {
+  console.log(`Server now listening at localhost:${PORT}`);
+});
+
 const io = socketio(server);
 io.set("transports", ["websocket"]);
 io.use((socket, next) => {
@@ -76,9 +80,6 @@ io.use((socket, next) => {
 
 EventIo(io);
 
-server.listen(PORT || 8080, () => {
-  console.log(`Server now listening at localhost:${PORT}`);
-});
 
 
 module.exports = app;

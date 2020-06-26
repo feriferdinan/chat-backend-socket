@@ -1,5 +1,4 @@
 exports.EventIo = (io) => {
-    console.log("1,EventIo");
 
     io.on("connection", function (socket) {
 
@@ -31,8 +30,7 @@ exports.EventIo = (io) => {
         });
     });
 
-    console.log("2,EventIo");
 
-
+    console.log("EventIo");
 
 }
