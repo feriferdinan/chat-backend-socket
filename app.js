@@ -67,7 +67,7 @@ app.use(function (err, req, res, next) {
 
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-// io.set("transports", ["websocket"]);
+io.set("transports", ["websocket"]);
 io.use((socket, next) => {
   let token = socket.handshake.query.username;
   if (token) {
