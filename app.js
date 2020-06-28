@@ -12,7 +12,7 @@ const logger = require('morgan');
 const { EventIo } = require("./socket/socket")
 const ENV = process.env.NODE_ENV;
 const stage = require("./config/config")[ENV];
-const PORT = process.env.SERVER_PORT || 3010
+const PORT = process.env.PORT
 
 const middleware = require('./middleware/middleware');
 
