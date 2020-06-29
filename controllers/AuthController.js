@@ -26,6 +26,7 @@ exports.login = function (req, res) {
             var newData = {
                 _id: user._id,
                 email: user.email,
+                name: user.name
             }
             var token = await jwt.sign(newData, process.env.SECRET_KEY);
             newData.avatar = user.avatar
@@ -103,7 +104,8 @@ exports.register = async function (req, res) {
                 await sendEmail(user.email, user.emailToken)
                 var newUser = {
                     _id: user._id,
-                    email: user.email
+                    email: user.email,
+                    name: user.name,
                 }
                 var token = await jwt.sign(newUser, process.env.SECRET_KEY);
                 return res.status(201).send({
