@@ -9,10 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID,
       },
-      username: {
-        type: Sequelize.STRING,
-        unique: true
-      },
       name: {
         type: Sequelize.STRING
       },
@@ -28,6 +24,15 @@ module.exports = {
       },
       avatar: {
         type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.STRING
+      },
+      emailToken: {
+        type: Sequelize.TEXT
+      },
+      isActive: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

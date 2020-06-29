@@ -21,13 +21,11 @@ exports.login = function (req, res) {
         .then(async function (user) {
             if (user == null)
                 return res.status(401).send({ 'message': 'user not found!' })
-            if (!bcrypt.compareSync(password, user.password))
-                return res.status(401).send({ 'message': 'wrong password!' })
+            if (!bcrypt.compareSync(password, user.password)) return res.status(401).send({ 'message': 'wrong password!' })
 
             var newData = {
                 _id: user._id,
                 email: user.email,
-                username: user.username,
             }
             var token = await jwt.sign(newData, process.env.SECRET_KEY);
             newData.avatar = user.avatar
@@ -62,7 +60,7 @@ async function sendEmail(email, token) {
         from: process.env.EMAIL_ACCOUNT, // sender address
         to: email, // list of receivers
         subject: 'Verify Your email', // Subject line
-        html: `<a href="${process.env.API_BASE_URL}/auth/verify?token=${token}" >klik to verify</a>`
+        html: `<a href="${process.env.API_BASE_URL}auth/verify?email=${email}&token=${token}" >klik to verify</a>`
     };
 
     await transporter.sendMail(mailOptions, function (err, info) {
@@ -76,15 +74,16 @@ async function sendEmail(email, token) {
 }
 
 exports.register = async function (req, res) {
-    if (req.body.email || validator.isEmail(req.body.email) == false)
+    if (!req.body.email || validator.isEmail(req.body.email) == false)
         return res.status(400).send({ 'message': 'Email Empty or wrong format!' })
-    if (req.body.password || validator.isLength(req.body.password, { min: 8, max: 10 }) == false)
+    if (!req.body.phone_number)
+        return res.status(400).send({ 'message': 'Phone Empty or wrong format!' })
+    if (!req.body.password || validator.isLength(req.body.password, { min: 8, max: 10 }) == false)
         return res.status(400).send({ 'message': 'password length min 8, max 10' })
 
     await model.user.findOne({ where: { email: req.body.email } })
         .then(function (user) {
-            if (user != null)
-                return res.status(200).send({ 'message': 'email already registered' });
+            if (user != null) return res.status(401).send({ 'message': 'email already registered' });
             createUser(userData = req.body);
         })
         .catch(function (e) {
@@ -92,25 +91,25 @@ exports.register = async function (req, res) {
         })
 
     async function createUser(userData) {
-        var emailToken = await bcrypt.hashSync(req.body.email, salt);
-
+        let emailToken = await bcrypt.hashSync(req.body.email, salt);
         await model.user.create({
             name: userData.name,
             email: userData.email,
             password: userData.password,
+            phone_number: userData.phone_number,
             emailToken: emailToken,
         })
             .then(async function (user) {
                 await sendEmail(user.email, user.emailToken)
-
                 var newUser = {
                     _id: user._id,
-                    email: user.email,
-                    username: user.username,
+                    email: user.email
                 }
+                var token = await jwt.sign(newUser, process.env.SECRET_KEY);
                 return res.status(201).send({
                     data: newUser,
-                    message: 'verify your email!'
+                    message: 'verify your email!',
+                    token: token
                 })
             })
             .catch(function (e) {
@@ -121,7 +120,8 @@ exports.register = async function (req, res) {
 
 exports.verifyEmail = function (req, res) {
     var token = req.query.token;
-    model.user.findOne({ where: { emailToken: token } })
+    var email = req.query.email;
+    model.user.findOne({ where: { email: email } })
         .then(function (user) {
             if (user == null)
                 return res.status(404).send({ 'message': 'link invalid' })

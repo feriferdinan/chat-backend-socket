@@ -10,7 +10,7 @@ router.get('/tes', function (req, res) {
     res.send({ message: "Tes OK" })
 });
 router.post('/login', AuthController.login);
-// router.post('/register', AuthController.register);
-// router.get('/verify', AuthController.verifyEmail);
+router.post('/register', AuthController.register);
+router.get('/verify', AuthController.verifyEmail);
 
 module.exports = router;

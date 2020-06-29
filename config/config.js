@@ -22,10 +22,10 @@ module.exports = {
     "database": process.env.DB_PROD_DATABASE,
     "host": process.env.DB_PROD_HOST,
     "dialect": "postgres",
-    // "dialectOptions": {
-    //   // "ssl": true,
-    //   // ssl: { rejectUnauthorized: false }
-    // },
+    "dialectOptions": {
+      // "ssl": true,
+      ssl: { rejectUnauthorized: false }
+    },
     "operatorsAliases": 0
   },
   "saltRounds": 10
