@@ -11,12 +11,11 @@ exports.index = async function (req, res) {
                 {
                     model: model.participants,
                     attributes: ["_id"],
-                    // where: {
-                    //     user_id
-                    //     // : {
-                    //     //     [Op.iLike]: "%" + user_id + "%"
-                    //     // }
-                    // },
+                    where: {
+                        user_id: {
+                            [Op.or]: [user_id]
+                        }
+                    },
                     include: [{
                         model: model.user,
                         attributes: ["_id", "name", "avatar"]
@@ -25,7 +24,7 @@ exports.index = async function (req, res) {
                 {
                     model: model.message,
                     separate: true,
-                    limit: 25,
+                    limit: 50,
                     order: [
                         ['createdAt', 'DESC'],
                     ],
