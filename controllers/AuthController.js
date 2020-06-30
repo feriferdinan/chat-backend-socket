@@ -26,9 +26,9 @@ exports.login = function (req, res) {
             var newData = {
                 _id: user._id,
                 email: user.email,
-                name: user.name
             }
             var token = await jwt.sign(newData, process.env.SECRET_KEY);
+            newData.name = user.name
             newData.avatar = user.avatar
             newData.phone_number = user.phone_number
             return res.status(200).send({
@@ -105,9 +105,11 @@ exports.register = async function (req, res) {
                 var newUser = {
                     _id: user._id,
                     email: user.email,
-                    name: user.name,
                 }
                 var token = await jwt.sign(newUser, process.env.SECRET_KEY);
+                newUser.name = user.name
+                newUser.avatar = user.avatar
+                newUser.phone_number = user.phone_number
                 return res.status(201).send({
                     data: newUser,
                     message: 'verify your email!',
