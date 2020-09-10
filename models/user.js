@@ -15,7 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     phone_number: DataTypes.STRING,
     avatar: DataTypes.STRING
   }, {
-    defaultScope: { attributes: { exclude: ['password'] } }
+    defaultScope: { attributes: { exclude: ['password'] } },
+    scopes: {
+      withPassword: {
+        attributes: {
+          include: ['password']
+        }
+      }
+    }
   });
   User.associate = function (models) {
     User.hasMany(models.message, {

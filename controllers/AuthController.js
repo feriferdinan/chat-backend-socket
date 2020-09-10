@@ -17,7 +17,7 @@ exports.login = function (req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
-    model.user.findOne({ where: { email: email } })
+    model.user.scope("withPassword").findOne({ where: { email: email } })
         .then(async function (user) {
             if (user == null)
                 return res.status(401).send({ 'message': 'user not found!' })

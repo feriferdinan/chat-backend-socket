@@ -39,8 +39,7 @@ exports.check = async function (req, res) {
             phone_number
         } = req.body;
         const users = await model.user.findAll({
-            where: { 'phone_number': phone_number },
-
+            where: { 'phone_number': phone_number }
         });
         if (users.length != 0) {
             res.status(201).json({
