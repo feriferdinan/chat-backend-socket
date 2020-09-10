@@ -4,5 +4,6 @@ var router = express.Router();
 var UserController = require('../controllers/UserController');
 
 router.patch('/', UserController.patch);
+router.get('/check', UserController.check);
 
 module.exports = router;
