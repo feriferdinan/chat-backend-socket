@@ -21,10 +21,9 @@ exports.index = async function (req, res) {
                         attributes: ["_id", "name", "avatar"]
                     }]
                 },
-                {
+                paginate({
                     model: model.message,
                     separate: true,
-                    limit: 50,
                     order: [
                         ['createdAt', 'DESC'],
                     ],
@@ -32,7 +31,9 @@ exports.index = async function (req, res) {
                         model: model.user,
                         attributes: ["_id", "name", "avatar"]
                     }]
-                },
+                }, {
+                    page: 1, pageSize: 25
+                }),
             ]
         });
         if (messages) {
